@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
+    <title>Saturn</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
@@ -69,10 +69,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="M3-D8.html">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="./backoffice.html">Backoffice</a>
+                    <a class="nav-link" href="backoffice.html">Backoffice</a>
                 </li>
             </ul>
         </div>
@@ -138,19 +138,39 @@
 
         let id = null
 
+
+
+
+
         window.onload = async () => {
             let urlParams = new URLSearchParams(window.location.search);
             id = urlParams.get("id");
             if (id) {
-                let response = await fetch(url + id); // contacting the endpoint for a single event
-                let event = await response.json(); // transforming the response body in an usable object, asyncronous operation!
+                let response = await fetch(url + id, {
+                    headers: new Headers({
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiYzYyMzRiY2RlMTAwMTc2MTZhOGYiLCJpYXQiOjE2MDUwOTI5MDAsImV4cCI6MTYwNjMwMjUwMH0.vSSAEz_xytM3hrefGNp4shqeH1ATnMHe0vqTw8A5lgo"
+
+                    })
+                }); // contacting the endpoint for a single event
+                let event = await response.json();
+                // transforming the response body in an usable object, asyncronous operation!
                 document.getElementById("name").value = event.name;
                 document.getElementById("description").value = event.description;
                 document.getElementById("brand").value = event.brand;
                 document.getElementById("imageurl").value = event.imageUrl;
                 document.getElementById("price").value = event.price;
             }
+
+
+
+
+
+
+
         }
+
+
 
 
 

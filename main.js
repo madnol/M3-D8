@@ -1,33 +1,38 @@
+let id;
+const url = "https://striveschool-api.herokuapp.com/api/agenda/";
+
 window.onload = async () => {
-    const url = "https://striveschool-api.herokuapp.com/api/agenda/";
-    let currentEvents = document.querySelector("#currentEvents");
+  let urlParams = new URLSearchParams(window.location.search); // creating a new instance of the URLSearchParams object
+  id = urlParams.get("id"); // saving the id retrieved from the url address bar
 
-    try {
-      let response = await fetch(url); // this is getting the response from the API for a fetch request
-      let events = await response.json(); // this is transforming the response in a json, asyncronous operation!
+  try {
+    let response = await fetch(url + id); // contacting the endpoint for a single event
+    let event = await response.json(); // transforming the response body in an usable object, asyncronous operation!
 
-      if (events.length > 0) {
-        events.forEach((e) => {
-          let listItem = document.createElement("li");
-          listItem.classList.add(
-            "list-group-item",
-            "d-flex",
-            "justify-content-between"
-          );
-          listItem.innerHTML = `
-          <span>${e.name}</span>
-          <span>
-            <span>${e.price}$</span>
-            <span>
-              <a class="btn btn-info" href="detail.html?id=${e._id}">VIEW DETAILS</a>
-            </span>
-          </span>`;
-          currentEvents.appendChild(listItem);
-        });
-      } else {
-        currentEvents.innerHTML = "<h1>No planned events</h1>";
-      }
-    } catch (error) {
-      console.log(error);
+    let element = document.createElement("p");
+    element.innerHTML = `${event.name} : ${event.description}`;
+
+    document.querySelector("#details").appendChild(element);
+  } catch (error) {
+    alert("Something went wrong");
+  }
+};
+
+const handleDelete = async () => {
+  try {
+    const response = await fetch(url + id, { method: "DELETE" });
+    if (response.ok) {
+      // checking the ok property which stores the successful result of the operation
+      alert("Event deleted successfully");
+      location.assign("index.html");
+    } else {
+      alert("Something went wrong!");
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const handleEdit = () => {
+  location.href = "backoffice.html?id=" + id;
+};
